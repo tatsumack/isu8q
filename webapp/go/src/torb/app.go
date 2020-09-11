@@ -233,7 +233,7 @@ func getEvent(eventID, loginUserID int64) (*Event, error) {
 		"C": &Sheets{},
 	}
 
-	rows, err := db.Query("SELECT * FROM sheets ORDER BY `rank`, num")
+	rows, err := db.Query("SELECT * FROM sheets force index(rank_num_uniq) ORDER BY `rank`, num")
 	if err != nil {
 		return nil, err
 	}
@@ -355,7 +355,7 @@ func main() {
 		cmd.Stdout = os.Stdout
 		err := cmd.Run()
 		if err != nil {
-			return nil
+			return err
 		}
 
 		return c.NoContent(204)
